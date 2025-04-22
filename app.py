@@ -10,7 +10,7 @@ def dice_roller():
     if request.method == 'POST':
         rolled = random.randint(1, 6)
         img_url = f"https://upload.wikimedia.org/wikipedia/commons/{get_wiki_dice_path(rolled)}"
-        dice_img = f'<img src="{img_url}" alt="Dice {rolled}" width="100">'
+        dice_img = f'<img src="{img_url}" alt="Dice {rolled}" class="dice-img">'
         result = f'''
             <div class="result">
                 🎲 Kamu mendapat angka: <span class="rolled">{rolled}</span><br>
@@ -55,10 +55,16 @@ def dice_roller():
                     background: #ecf0f1;
                     padding: 15px;
                     border-radius: 8px;
+                    text-align: center;
                 }}
                 .rolled {{
                     color: #e74c3c;
                     font-size: 28px;
+                }}
+                .dice-img {{
+                    display: block;
+                    margin: 0 auto;
+                    width: 100px;
                 }}
             </style>
         </head>
@@ -87,6 +93,7 @@ def get_wiki_dice_path(value):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
 # from flask import Flask
