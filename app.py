@@ -83,7 +83,7 @@ def dice_roller():
 def get_wiki_dice_path(value):
     dice_map = {
         1: "2/2c/Alea_1.png",
-        2: "8/8d/Alea_2.png",
+        2: "3/3b/Alea_2.png",
         3: "2/2f/Alea_3.png",
         4: "8/8d/Alea_4.png",
         5: "5/55/Alea_5.png",
