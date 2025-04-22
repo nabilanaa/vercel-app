@@ -6,24 +6,84 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def dice_roller():
     result = ''
+    dice_img = ''
     if request.method == 'POST':
-        dice = int(request.form['dice'])
-        rolled = random.randint(1, dice)
-        result = f'<p>🎲 Kamu melempar dadu {dice}-sisi dan mendapat: <strong>{rolled}</strong></p>'
-    
+        rolled = random.randint(1, 6)
+        img_url = f"https://upload.wikimedia.org/wikipedia/commons/{get_wiki_dice_path(rolled)}"
+        dice_img = f'<img src="{img_url}" alt="Dice {rolled}" width="100">'
+        result = f'''
+            <div class="result">
+                🎲 Kamu mendapat angka: <span class="rolled">{rolled}</span><br>
+                {dice_img}
+            </div>
+        '''
+
     return f'''
-        <h1>🎲 Dice Roller</h1>
-        <form method="post">
-            <label>Pilih jenis dadu:</label>
-            <select name="dice">
-                <option value="6">d6</option>
-                <option value="10">d10</option>
-                <option value="20">d20</option>
-            </select>
-            <button type="submit">Lempar!</button>
-        </form>
-        {result}
+        <html>
+        <head>
+            <title>Dice Roller</title>
+            <style>
+                body {{
+                    font-family: 'Segoe UI', sans-serif;
+                    background: #f5f7fa;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    margin: 0;
+                }}
+                form {{
+                    background: white;
+                    padding: 20px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                    text-align: center;
+                }}
+                select, button {{
+                    font-size: 16px;
+                    padding: 8px;
+                    margin: 10px 0;
+                    border-radius: 6px;
+                    border: 1px solid #ccc;
+                }}
+                .result {{
+                    margin-top: 20px;
+                    font-size: 20px;
+                    color: #2c3e50;
+                    font-weight: bold;
+                    background: #ecf0f1;
+                    padding: 15px;
+                    border-radius: 8px;
+                }}
+                .rolled {{
+                    color: #e74c3c;
+                    font-size: 28px;
+                }}
+            </style>
+        </head>
+        <body>
+            <h1>🎲 Dice Roller (d6)</h1>
+            <form method="post">
+                <p><strong>Lempar dadu 6-sisi:</strong></p>
+                <button type="submit">🎲 Lempar!</button>
+            </form>
+            {result}
+        </body>
+        </html>
     '''
+
+# URL path for Wikimedia dice images
+def get_wiki_dice_path(value):
+    dice_map = {
+        1: "2/2c/Alea_1.png",
+        2: "8/8d/Alea_2.png",
+        3: "2/2f/Alea_3.png",
+        4: "8/8d/Alea_4.png",
+        5: "5/55/Alea_5.png",
+        6: "f/f4/Alea_6.png"
+    }
+    return dice_map[value]
 
 if __name__ == '__main__':
     app.run(debug=True)
